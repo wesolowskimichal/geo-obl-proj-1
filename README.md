@@ -1,3 +1,9 @@
+## Requirements
+
+- Python 3.13.1
+
+---
+
 ### How to run
 
 1. Clone repo
@@ -6,10 +12,10 @@
 WINDOWS:
 ```
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate
 ```
 
-LINUX:
+LINUX/MAC:
 ```
 python -m venv venv
 source venv/bin/activate
