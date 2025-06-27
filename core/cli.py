@@ -13,6 +13,7 @@ class CLI(ABC):
         description: str,
         epilog: str = "",
     ):
+        # Tworzenie parsera argumentów CLI z opisem i epilogiem (opcjonalnym tekstem końcowym)
         self.parser = argparse.ArgumentParser(description=description, epilog=epilog)
         self.parser.add_argument(
             "coords",
@@ -26,19 +27,24 @@ class CLI(ABC):
 
     def parse_coords(self, coords: Sequence[str]) -> list[Point]:
         try:
+            # Konwersja podanych argumentów do floatów
             nums = list(map(float, coords))
         except ValueError as exc:
             raise SystemExit(f"All coordinates must be numeric – {exc}") from exc
         if len(nums) != 8:
+            # Sprawdzenie, czy dokładnie 8 współrzędnych zostało podanych
             raise SystemExit("Exactly 8 numeric coordinates are required.")
+        # Grupowanie współrzędnych w punkty (x, y) – co 2 elementy
         return [Point(nums[i], nums[i + 1]) for i in range(0, 8, 2)]
 
     def prompt_coords(self, argv: list[str] | None = None) -> list[Point]:
         args = self.parse_args(argv)
 
         if args.coords:
+            # Jeśli współrzędne zostały podane w argumentach – użyj ich
             return self.parse_coords(args.coords)
 
+        # Jeśli nie, zapytaj użytkownika o współrzędne w trybie interaktywnym
         prompt = (
             "Enter coordinates for the segments (x y) in order: "
             "P1, Q1, P2, Q2, separated by spaces → "
@@ -47,9 +53,10 @@ class CLI(ABC):
             nums = list(map(float, input(prompt).strip().split()))
         except ValueError:
             raise SystemExit("All coordinates must be numeric.")
+        # Konwersja liczb na stringi, aby użyć tej samej funkcji `parse_coords`
         return self.parse_coords(list(map(str, nums)))
 
     @abstractmethod
-    def present(slef, points: list[Point]) -> None:
+    def present(self, points: list[Point]) -> None:
         """Method to present the parsed coordinates or results."""
         ...

@@ -9,11 +9,14 @@ class ConsoleCLI(CLI):
         result = segment_intersection(p1, q1, p2, q2)
 
         if result is None:
+            # Brak przecięcia odcinków
             print("NIE")
         elif isinstance(result, Point):
+            # Przecięcie w pojedynczym punkcie
             print("TAK")
             print(f"Punkt przecięcia: ({result.x:.10g}, {result.y:.10g})")
         else:
+            # Przecięcie jako wspólny fragment (odcinek)
             a, b = result
             print("TAK")
             print(
